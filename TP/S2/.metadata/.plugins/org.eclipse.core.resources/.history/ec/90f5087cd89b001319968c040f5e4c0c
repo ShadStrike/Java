@@ -1,0 +1,16 @@
+package test;
+import java.util.*;
+
+public class run {
+	public static void main(String[] args)
+	{
+		ArrayList<Monôme> Poly = new ArrayList<Monôme>(10);
+		Poly.ensureCapacity(999999);
+		System.out.println(Poly.size());
+		Poly.add(new Monôme(4,2));
+		Poly.add(new Monôme(5,3));
+		System.out.println(Poly);
+		
+            }
+
+}

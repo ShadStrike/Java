@@ -1,0 +1,21 @@
+
+
+public class client {
+	public static void main(String[] args) throws PolynômeException
+	{
+		Polynôme A = new Polynôme();
+		A.ajouterMonôme(new Monôme(2,0));
+		A.ajouterMonôme(new Monôme(-6,6));
+		A.ajouterMonôme(new Monôme(1,5));
+		Polynôme C = new Polynôme();
+		C.ajouterMonôme(new Monôme(2,0));
+		C.ajouterMonôme(new Monôme(1,5));
+		System.out.println(A.equal(C));
+		Polynôme B = A.dérivée();
+		for (int i=0;i<B.Poly.size();i++){
+			Monôme Zi = B.Poly.get(i);
+			System.out.println(Zi);}
+		System.out.println(A.toString());
+            }
+
+}

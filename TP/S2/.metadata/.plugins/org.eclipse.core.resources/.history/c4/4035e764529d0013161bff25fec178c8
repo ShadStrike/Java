@@ -1,0 +1,130 @@
+import java.util.Scanner;
+
+
+public class TestPolynome 
+{
+	
+	/**
+	 * affiche le menu de l'application
+	 */
+	public static void afficherMenu()
+	{
+		System.out.println("=================================================================");
+		System.out.println("||                  TP5 - La classe Polynome                   ||");
+		System.out.println("=================================================================");
+        System.out.println("|   1- Aficher le polynome                                      |");
+        System.out.println("|   2- Ajouter un monome au polynome                            |");
+        System.out.println("|   3- Calculer le degre du polynome                            |");
+        System.out.println("|   4- Calculer la deriver du polynome                          |");
+        System.out.println("|   5- Verifie si il est egale a un autre polynome              |");
+        System.out.println("|   6- Calculer la somme du polynome avec un autre polynome     |");
+        System.out.println("|   7- Calculer le produit du premier polynome avec un monome   |");
+        System.out.println("|   8- Quitter l'application                                    |");
+        System.out.println("=================================================================");
+        System.out.println("Quel est votre choix ?");
+	}
+	
+	/**
+	 * Lit un monome
+	 * @param entree
+	 * 		Scanner
+	 * @return a
+	 *		Monome
+	 */
+	public static Monome lectureMonome(Scanner entree)
+	{
+		float c;
+		int e;	
+		System.out.println("Nouveau coefficient?");
+    	c = entree.nextFloat();
+    	System.out.println("Nouveaux exposant?");
+    	e = entree.nextInt();
+    	Monome a = new Monome(c,e);
+		return a;
+	}
+	
+	/**
+	 * Lit un polynome
+	 * @param entree
+	 * 		Scanner
+	 * @return P
+	 * 		Polynome
+	 * @throws PolynomeException
+	 */
+	public static Polynome lecturePolynome(Scanner entree) throws PolynomeException
+	{
+		int c;
+		boolean fin = false;
+		Polynome P = new Polynome();
+		System.out.println("Entrer le premier Monome :");
+		P.ajouterMonome(TestPolynome.lectureMonome(entree));
+		do {
+			System.out.println("Ajouter un autre monome? (1 oui/2 non)");
+			c = entree.nextInt();
+			switch (c) 
+			{
+			case 1:                
+			P.ajouterMonome(TestPolynome.lectureMonome(entree));
+				break;
+			case 2:
+                fin = true;
+                break;
+			}
+		} while (!fin);
+		return P;	
+	}
+	
+
+	public static void main(String[] args) throws PolynomeException
+	{
+		int choix;
+		boolean fini = false;
+		Polynome poly = new Polynome();
+		Scanner entree = new Scanner(System.in);
+		
+		do {
+			TestPolynome.afficherMenu();
+			choix = entree.nextInt();
+            switch (choix) 
+            {
+            case 1:
+            	System.out.println(poly.toString());
+                break;
+                
+            case 2:
+            	poly.ajouterMonome(TestPolynome.lectureMonome(entree));
+                break;
+                
+            case 3:
+            	System.out.println("" + "Le polynome est de degre " + poly.degre() + ".");
+                break;
+            
+            case 4:
+            	System.out.println(poly.derivee());
+                break;
+                
+            case 5:
+            	if (poly.equal(TestPolynome.lecturePolynome(entree)))
+            		System.out.println("Il sont equivalent");
+            	else
+            		System.out.println("Il ne sont pas equivalent");
+                break;
+                
+            case 6:
+            	System.out.println((poly.somme(TestPolynome.lecturePolynome(entree))).toString());
+                break;
+            case 7:
+            	System.out.println(poly.produit(TestPolynome.lectureMonome(entree)));
+                break;
+       	                
+            case 8:
+                fini = true;
+                break;
+            default:
+                System.out.println("choix errone");
+            }
+        } while (!fini);
+        System.out.println("le programme est termine");
+        entree.close();
+	}
+}

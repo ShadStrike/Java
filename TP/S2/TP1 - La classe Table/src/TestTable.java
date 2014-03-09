@@ -1,0 +1,54 @@
+import java.util.Scanner;
+
+public class TestTable {
+
+    public static void main(String[] args) {
+        Table tab = new Table();
+        int v;
+        int rang;
+        int choix;
+        Scanner entrée = new Scanner(System.in);
+        tab.lireValeurs(entrée);
+        boolean fini = false;
+        do {
+            System.out.println("Que voulez-vous faire ?");
+            System.out.println("   1- rechercher le rang de la 1ere occurrence d'une valeur");
+            System.out.println("   2- rechercher la valeur minimum");
+            System.out.println("   3- trier le tableau par insertion");
+            System.out.println("   4- Calculer moyenne");
+            System.out.println("   5- terminer le programme");
+            choix = entrée.nextInt();
+            switch (choix) {
+            case 1:
+                System.out.println("Valeur à rechercher : ");
+                v = entrée.nextInt();
+                rang = tab.rang1èreOccurrenceValeur(v);
+                if (rang != -1) {
+                    System.out.println("valeur trouvée au rang " + rang);
+                } else {
+                    System.out.println("valeur non trouvée");
+                }
+                break;
+            case 2:
+                System.out.println("rang minimum " + tab.indiceMinimum());
+                break;
+            case 3:
+                tab.trierParInsertion();
+                System.out.println("tableau trié");
+                tab.écrireValeurs();
+                break;
+            case 4:
+                System.out.println("moyenne");
+                System.out.println(tab.moyenneElementsStocke());
+            	break;
+            case 5:
+                fini = true;
+                break;
+            default:
+                System.out.println("choix erroné");
+            }
+        } while (!fini);
+        System.out.println("le programme est terminé");
+        entrée.close();
+    }
+}

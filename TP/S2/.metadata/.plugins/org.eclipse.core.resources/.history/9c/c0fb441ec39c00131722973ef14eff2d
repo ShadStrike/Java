@@ -1,0 +1,167 @@
+import java.util.*;
+public class Polynôme {
+
+	List<Monôme> Poly = new ArrayList<Monôme>();
+	
+	/**
+	 * Construit un polynôme vide
+	 */
+	public Polynôme()
+	{
+		Poly.add(new Monôme(0,0));
+	}
+	
+	/**
+	 * Ajoute un monôme à un polynôme
+	 * @param monome
+	 * 		Monôme à ajouter au Polynôme source
+	 * @throws PolynômeException 
+	 */
+	public void ajouterMonôme(Monôme monome) throws PolynômeException
+	{
+		int i = monome.exposant();
+		if ( i<this.Poly.size() && (this.Poly.get(i)).estNul())  {
+			this.Poly.set(i, monome);
+		} 
+		else if ( i<this.Poly.size() && !((this.Poly.get(i)).estNul()))
+				throw new PolynômeException(2);
+		else{
+		 
+		   while( this.Poly.size()<i ) {
+			   this.Poly.add(new Monôme(0, this.Poly.size()));
+		   }
+		 
+		   this.Poly.add(monome);
+		}
+	}
+	
+	/**
+	 * Somme de deux polynômes
+	 * @param p
+	 * 		Polynôme à additioner au polynôme source
+	 * @return r
+	 * 		Polynôme issue de la somme du polynôme source et du polynôme p
+	 */
+	public Polynôme somme(Polynôme p)
+	{
+		Polynôme p2 = p;
+		Polynôme this2 = this;
+		Polynôme r = new Polynôme();
+		while (this2.Poly.size() < p2.Poly.size())
+			this2.Poly.add(new Monôme(0, this.Poly.size()));
+		while (this2.Poly.size() > p2.Poly.size())
+			p2.Poly.add(new Monôme(0, p.Poly.size()));
+		r.Poly.set(0,new Monôme(((this2.Poly.get(0)).coefficient() + (p2.Poly.get(0)).coefficient()),0));
+		for(int i = 1;i < this2.Poly.size();i++)
+			r.Poly.add(new Monôme(((this2.Poly.get(i)).coefficient() + (p2.Poly.get(i)).coefficient()), i));
+		return r;
+	}
+	
+	/**
+	 * Produit d’un polynôme et d’un monôme
+	 * @param m
+	 * 		Monôme utiliser pour multiplier
+	 * @return r
+	 * 		Polynôme resultat du Produit du polynôme source et du monôme m
+	 * @throws PolynômeException
+	 */
+	public Polynôme produit(Monôme m) throws PolynômeException
+	{
+		Polynôme r = new Polynôme();
+		for (int i = 0;i < this.Poly.size(); i++){
+			System.out.println(this.Poly.size());
+			if ((((this.Poly.get(i)).produit(m)).exposant() < r.Poly.size()) && (this.Poly.get(i)).estNul())
+				{r.Poly.set(((this.Poly.get(i)).produit(m)).exposant(),(this.Poly.get(i)).produit(m));
+				if (((this.Poly.get(i)).produit(m)).exposant() != i)
+					r.Poly.set(i,new Monôme(0,0));
+				}
+			else if ((((this.Poly.get(i)).produit(m)).exposant() < r.Poly.size()) && !(this.Poly.get(((this.Poly.get(i)).produit(m)).exposant())).estNul())
+				{r.Poly.set(((this.Poly.get(i)).produit(m)).exposant(),(this.Poly.get(((this.Poly.get(i)).produit(m)).exposant())).somme(((this.Poly.get(i)).produit(m))));
+				if (((this.Poly.get(i)).produit(m)).exposant() != i)
+					r.Poly.set(i,new Monôme(0,0));
+				}
+			else if ((((this.Poly.get(i)).produit(m)).exposant() >= r.Poly.size()))
+				r.ajouterMonôme(((this.Poly.get(i)).produit(m)));
+		}
+		return r;
+	}
+	
+	/**
+	 * Dérivée d’un polynôme
+	 * @return Polynôme
+	 * 		Polynôme issue de la dérivée du polynôme source 
+	 * @throws PolynômeException
+	 */
+	public Polynôme dérivée() throws PolynômeException
+	{
+		Polynôme r = new Polynôme();
+		for (int i = 0; i < this.Poly.size();i++)
+			r.ajouterMonôme((this.Poly.get(i)).dérivée());
+		return r; 
+	}
+	
+	/**
+	 * Vérifie si un polynôme est equivalent à en autre
+	 * @param p
+	 * 		Polynôme utiliser pour la comparaison
+	 * @return r 
+	 * 		boolean - Vrai si equivalent sinon faux
+	 */
+	public boolean equal(Polynôme p){
+		boolean r = true;
+		if (this.Poly.size() != p.Poly.size())
+		{
+			r = false;
+		}
+		else if (this.Poly.size() == p.Poly.size())
+		{
+			for (int i=0;i < this.Poly.size();i++)
+			{
+			if ((this.Poly.get(i)).coefficient() != (p.Poly.get(i)).coefficient())
+				{
+				r = false;
+				}
+			}
+		}
+		return r;
+			
+	}
+	
+	/**
+	 * Retourne le degré d'un Polynôme
+	 * @return int
+	 * 		Degré du polynôme
+	 */
+	public int degré(){
+		return (this.Poly.size()-1);
+	}
+	
+	/**
+	 * Ecris le Polynome sous forme de chaine de caractères
+	 */
+	public String toString()
+	{
+		String res = "";
+		int i = 0;
+		while ((this.Poly.get(i)).estNul())
+		{
+			i++;
+		}
+		while  (i < this.Poly.size()){
+			if(!(this.Poly.get(i)).estNul()){
+				if((this.Poly.get(i)).coefficient() >= 0){
+					res += " + ";
+					res += (this.Poly.get(i)).toString();
+				}
+				else if ((this.Poly.get(i)).coefficient() < 0){
+					res += " - ";
+					res += ((this.Poly.get(i)).coefficient() -2*(this.Poly.get(i)).coefficient());
+					res += "ex";
+					res += this.Poly.get(i).exposant();
+				}
+			}
+			i ++;
+		}
+		return res;
+	}
+}

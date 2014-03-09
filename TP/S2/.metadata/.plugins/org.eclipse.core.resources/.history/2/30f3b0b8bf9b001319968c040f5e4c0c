@@ -1,0 +1,14 @@
+package test;
+
+import Monôme;
+import java.util.*;
+
+public class main {
+	public static void main(String[] args)
+	{
+		List<Monôme> Poly = new ArrayList<Monôme>();
+		Poly.set(5,new Monôme(1,1));
+		
+            }
+
+}

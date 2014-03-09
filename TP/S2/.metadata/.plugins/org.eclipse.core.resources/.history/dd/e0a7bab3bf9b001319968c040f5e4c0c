@@ -1,0 +1,86 @@
+import java.lang.ArithmeticException;
+
+public class Monôme {
+	private float c;
+	private int e;
+	
+	/**
+	 * Crée un monôme de coefficient c et d'exposant e
+	 * @param c
+	 * @param e
+	 */
+	public Monôme (float c, int e)
+	{
+		this.c = c;
+		this.e = e;
+	}
+
+	/**
+	 * Retourne le coefficient d'un monôme
+	 * @return float
+	 */
+	public float coefficient()
+	{
+		return this.c;
+	}
+	
+	/**
+	 * Retourne l'exposant d'un monôme
+	 * @return int
+	 */
+	public int exposant()
+	{
+		return this.e;
+	}
+	
+	/**
+	 * Effectue la somme entre un monôme et un autre monôme a
+	 * @param a
+	 * @throws ArithmeticException
+	 */
+	public Monôme somme(Monôme a) 
+	throws ArithmeticException
+	{
+		if (this.e == a.e)
+			return new Monôme(this.c + a.c,this.e);
+		else
+			throw new ArithmeticException();
+	}
+	
+	/**
+	 * Effectue le produit entre un monôme et un autre monôme a
+	 * @param a
+	 */
+	public Monôme produit(Monôme a)
+	{
+		return new Monôme(this.c * a.c,this.e + a.e);
+	}
+	
+	/**
+	 * 	Retourne la dérivée d'un monôme
+	 */
+	public Monôme dérivée()
+	{
+		if(this.e == 0)
+			return new Monôme (0,0);
+		else
+			return new Monôme (this.c * this.e,this.e --);
+	}
+	
+	/**
+	 * Dit si un monôme est nul
+	 * @return boolean
+	 */
+	public boolean estNul()
+	{
+		return (this.c == 0);
+	}
+	
+	/**
+	 * Ecrit le monôme sous forme de chaine de caractères
+	 * @return String
+	 */
+	public String toString(){
+		return ("" + this.c + "xe" + this.e);
+	}
+}

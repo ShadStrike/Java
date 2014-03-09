@@ -1,0 +1,182 @@
+import java.util.*;
+public class PolynomeV2 {
+
+	List<Monome> Poly = new ArrayList<Monome>();
+	
+	/**
+	 * Construit un polynome vide
+	 */
+	public PolynomeV2()
+	{
+		Poly.add(new Monome(0,0));
+	}
+	
+	/**
+	 * Ajoute un monome a un polynome
+	 * @param monome
+	 * 		Monome a ajouter au Polynome source
+	 * @throws PolynomeException 
+	 */
+	public void ajouterMonome(Monome monome) throws PolynomeException
+	{
+		int i = monome.exposant();
+		if ( i<this.Poly.size() && (this.Poly.get(i)).estNul())  
+		{
+			this.Poly.set(i, monome);
+		} 
+		else if ( i<this.Poly.size() && !((this.Poly.get(i)).estNul()))
+				throw new PolynomeException(2);
+		else
+		{
+		 
+		   while( this.Poly.size()<i ) 
+		   {
+			   this.Poly.add(new Monome(0, this.Poly.size()));
+		   }
+		 
+		   this.Poly.add(monome);
+		}
+	}
+	
+	/**
+	 * Somme de deux polynomes
+	 * @param p
+	 * 		Polynome a additioner au polynome source
+	 * @return r
+	 * 		Polynome issue de la somme du polynome source et du polynome p
+	 */
+	public PolynomeV2 somme(PolynomeV2 p)
+	{
+		PolynomeV2 p2 = p;
+		PolynomeV2 this2 = this;
+		PolynomeV2 r = new PolynomeV2();
+		while (this2.Poly.size() < p2.Poly.size())
+			this2.Poly.add(new Monome(0, this.Poly.size()));
+		while (this2.Poly.size() > p2.Poly.size())
+			p2.Poly.add(new Monome(0, p.Poly.size()));
+		r.Poly.set(0,new Monome(((this2.Poly.get(0)).coefficient() + (p2.Poly.get(0)).coefficient()),0));
+		for(int i = 1;i < this2.Poly.size();i++)
+			r.Poly.add(new Monome(((this2.Poly.get(i)).coefficient() + (p2.Poly.get(i)).coefficient()), i));
+		return r;
+	}
+	
+	/**
+	 * Produit d’un polynome et d’un monome
+	 * @param m
+	 * 		Monome utiliser pour multiplier
+	 * @return r
+	 * 		Polynome resultat du Produit du polynome source et du monome m
+	 * @throws PolynomeException
+	 */
+	public PolynomeV2 produit(Monome m) throws PolynomeException
+	{
+		PolynomeV2 r = new PolynomeV2();
+		for (int i = 0;i < this.Poly.size(); i++)
+		{
+			System.out.println(this.Poly.size());
+			if ((((this.Poly.get(i)).produit(m)).exposant() < r.Poly.size()) && (this.Poly.get(i)).estNul())
+				{
+				r.Poly.set(((this.Poly.get(i)).produit(m)).exposant(),(this.Poly.get(i)).produit(m));
+				if (((this.Poly.get(i)).produit(m)).exposant() != i)
+					r.Poly.set(i,new Monome(0,0));
+				}
+			else if ((((this.Poly.get(i)).produit(m)).exposant() < r.Poly.size()) && !(this.Poly.get(((this.Poly.get(i)).produit(m)).exposant())).estNul())
+				{
+				r.Poly.set(((this.Poly.get(i)).produit(m)).exposant(),(this.Poly.get(((this.Poly.get(i)).produit(m)).exposant())).somme(((this.Poly.get(i)).produit(m))));
+				if (((this.Poly.get(i)).produit(m)).exposant() != i)
+					r.Poly.set(i,new Monome(0,0));
+				}
+			else if ((((this.Poly.get(i)).produit(m)).exposant() >= r.Poly.size()))
+				r.ajouterMonome(((this.Poly.get(i)).produit(m)));
+		}
+		return r;
+	}
+	
+	/**
+	 * Derivee d’un polynome
+	 * @return Polynome
+	 * 		Polynome issue de la derivee du polynome source 
+	 * @throws PolynomeException
+	 */
+	public PolynomeV2 derivee() throws PolynomeException
+	{
+		PolynomeV2 r = new PolynomeV2();
+		for (int i = 0; i < this.Poly.size();i++)
+			r.ajouterMonome((this.Poly.get(i)).derivee());
+		return r; 
+	}
+	
+	/**
+	 * Verifie si un polynome est equivalent a en autre
+	 * @param p
+	 * 		Polynome utiliser pour la comparaison
+	 * @return r 
+	 * 		boolean - Vrai si equivalent sinon faux
+	 */
+	public boolean equal(PolynomeV2 p){
+		boolean r = true;
+		if (this.Poly.size() != p.Poly.size())
+		{
+			r = false;
+		}
+		else if (this.Poly.size() == p.Poly.size())
+		{
+			for (int i=0;i < this.Poly.size();i++)
+			{
+			if ((this.Poly.get(i)).coefficient() != (p.Poly.get(i)).coefficient())
+				{
+				r = false;
+				}
+			}
+		}
+		return r;
+			
+	}
+	
+	/**
+	 * Retourne le degre d'un Polynome
+	 * @return int
+	 * 		Degre du polynome
+	 */
+	public int degre()
+	{
+		return (this.Poly.size()-1);
+	}
+	
+	/**
+	 * Ecris le Polynome sous forme de chaine de caractères
+	 */
+	public String toString()
+	{
+		String res = "";
+		int i = 0;
+		if (this.equal(new PolynomeV2()))
+			return res;
+		while ((this.Poly.get(i)).estNul())
+		{
+			i++;
+		}
+		res += (this.Poly.get(i)).toString();
+		i++;
+		while  (i < this.Poly.size())
+		{
+			if(!(this.Poly.get(i)).estNul())
+			{
+				if((this.Poly.get(i)).coefficient() >= 0)
+				{
+					res += " + ";
+					res += (this.Poly.get(i)).toString();
+				}
+				else if ((this.Poly.get(i)).coefficient() < 0)
+				{
+					res += " - ";
+					res += ((this.Poly.get(i)).coefficient() -2*(this.Poly.get(i)).coefficient());
+					res += "ex";
+					res += this.Poly.get(i).exposant();
+				}
+			}
+			i ++;
+		}
+		return res;
+	}
+}

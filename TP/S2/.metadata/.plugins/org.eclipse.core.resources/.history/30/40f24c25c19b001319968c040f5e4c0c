@@ -1,0 +1,15 @@
+package test;
+import java.util.*;
+
+public class run {
+	public static void main(String[] args)
+	{
+		List<Monôme> Poly = new ArrayList<Monôme>(10);
+		Poly.add(3,new Monôme(1,1));
+		Poly.add(new Monôme(4,2));
+		Poly.add(new Monôme(5,3));
+		System.out.println(Poly);
+		
+            }
+
+}

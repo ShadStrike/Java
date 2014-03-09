@@ -1,0 +1,97 @@
+import java.util.Scanner;
+
+
+public class TestPolynôme {
+	
+	/**
+	 * affiche le menu de l'application
+	 */
+	public static void afficherMenu()
+	{
+		System.out.println("#################################################################");
+		System.out.println("##                  TP5 - La classe Polynôme                   ##");
+		System.out.println("#################################################################");
+        System.out.println("#   1- Aficher le polynôme                                      #");
+        System.out.println("#   2- Ajouter un mônome au polynome                            #");
+        System.out.println("#   3- Calculer le degré du polynôme                            #");
+        System.out.println("#   4- Calculer la dériver du polynôme                          #");
+        System.out.println("#   5- Verifie si il est egale à un autre polynôme              #");
+        System.out.println("#   6- Calculer la somme du polynôme avec un autre polynôme     #");
+        System.out.println("#   7- Calculer le produit du premier polynôme avec un monôme   #");
+        System.out.println("#   8- Quitter l'application                                    #");
+        System.out.println("#################################################################");
+        System.out.println("Quel est votre choix ?");
+	}
+	
+	public static Monôme lectureMonome(Scanner entrée)
+	{
+		float c;
+		int e;	
+		System.out.println("Nouveau coefficient?");
+    	c = entrée.nextFloat();
+    	System.out.println("Nouveaux exposant?");
+    	e = entrée.nextInt();
+    	Monôme a = new Monôme(c,e);
+		return a;
+	}
+	
+	public static Polynôme lecturePolynôme(Scanner entrée)
+	{
+		int c;
+		boolean fin = false;
+		Polynôme P = new Polynôme();
+		TestPolynôme.lectureMonome(entrée);
+		do {
+			c = entrée.nextInt();
+		} while (!fin);
+		
+	}
+	
+	public static void main(String[] args) throws PolynômeException
+	{
+		int choix;
+		boolean fini = false;
+		Scanner entrée = new Scanner(System.in);
+		
+		do {
+			TestPolynôme.afficherMenu();
+			choix = entrée.nextInt();
+            switch (choix) {
+            case 1:
+            	
+                break;
+                
+            case 2:
+            	
+                break;
+                
+            case 3:
+            	
+                break;
+            
+            case 4:
+            	
+                break;
+                
+            case 5:
+            	
+                break;
+                
+            case 6:
+            	
+                break;
+            case 7:
+            	
+                break;
+       	                
+            case 8:
+                fini = true;
+                break;
+            default:
+                System.out.println("choix erroné");
+            }
+        } while (!fini);
+        System.out.println("le programme est terminé");
+        entrée.close();
+	}
+}
